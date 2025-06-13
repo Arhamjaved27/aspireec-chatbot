@@ -1,0 +1,11 @@
+fastapi
+uvicorn
+python-dotenv
+groq
+scikit-learn
+beautifulsoup4
+requests
+PyPDF2
+jinja2
+aiofiles
+python-multipart
