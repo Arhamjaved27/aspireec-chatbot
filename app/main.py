@@ -20,12 +20,19 @@ app = FastAPI()
 # CORS for iframe embedding
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["*"],  # Allow all origins for iframe embedding
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
+# Add security headers for iframe
+@app.middleware("http")
+async def add_security_headers(request: Request, call_next):
+    response = await call_next(request)
+    response.headers["X-Frame-Options"] = "ALLOW-FROM *"
+    response.headers["Content-Security-Policy"] = "frame-ancestors *"
+    return response
 
 frontend_path = os.path.join(os.path.dirname(__file__), "..", "static")
 app.mount("/static", StaticFiles(directory=frontend_path), name="static")
