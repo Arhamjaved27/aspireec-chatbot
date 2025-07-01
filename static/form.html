@@ -15,7 +15,6 @@
         .form-container {
             background: white;
             padding: 2rem;
-            border-radius: 15px;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
             max-width: 900px;
             width: 100%;
@@ -107,19 +106,19 @@
     <div class="form-container">
         <!-- <h2 class="form-title">Student Information Form</h2> -->
         <form id="studentForm" onsubmit="return validateForm(event)">
-            <div class="mb-3">
+            <div class="mb-2">
                 <label for="name" class="form-label">Name</label>
                 <input type="text" class="form-control" id="name" name="name" required>
             </div>
-            <div class="mb-3">
+            <div class="mb-2">
                 <label for="email" class="form-label">Email</label>
                 <input type="email" class="form-control" id="email" name="email" required>
             </div>
-            <div class="mb-3">
+            <div class="mb-2">
                 <label for="phone" class="form-label">Phone Number (Optional)</label>
                 <input type="tel" class="form-control" id="phone" name="phone">
             </div>
-            <div class="mb-3">
+            <div class="mb-2">
                 <label for="studyLevel" class="form-label">Level of Study</label>
                 <select class="form-select" id="studyLevel" name="studyLevel" required>
                     <option value="">Select Level of Study</option>
@@ -128,24 +127,56 @@
                     <option value="phd">PhD</option>
                 </select>
             </div>
-            <div class="mb-3">
+            <div class="mb-2">
                 <label for="fieldOfInterest" class="form-label">Field of Interest</label>
                 <select class="form-select" id="fieldOfInterest" name="fieldOfInterest" required>
-                    <option value="">Select Field of Interest</option>
+                    <!-- <option value="">Select Field of Interest</option>
                     <option value="engineering">Engineering</option>
                     <option value="computer_science">Computer Science</option>
-                    <option value="business">Business</option>
+                    <option value="business">Business</option> 
+                    <option value="arts">Arts</option> -->
+                    <option value="">Select Field of Interest</option>
+                    <option value="agriculture">Agriculture</option>
+                    <option value="architecture">Architecture</option>
                     <option value="arts">Arts</option>
+                    <option value="biology">Biology</option>
+                    <option value="business">Business</option>
+                    <option value="chemistry">Chemistry</option>
+                    <option value="computer_science">Computer Science</option>
+                    <option value="data_science">Data Science</option>
+                    <option value="design">Design</option>
+                    <option value="economics">Economics</option>
+                    <option value="education">Education</option>
+                    <option value="engineering">Engineering</option>
+                    <option value="environmental_science">Environmental Science</option>
+                    <option value="healthcare">Healthcare</option>
+                    <option value="hospitality">Hospitality</option>
+                    <option value="international_relations">International Relations</option>
+                    <option value="law">Law</option>
+                    <option value="mathematics">Mathematics</option>
+                    <option value="media_studies">Media Studies</option>
+                    <option value="medicine">Medicine</option>
+                    <option value="nursing">Nursing</option>
+                    <option value="pharmacy">Pharmacy</option>
+                    <option value="physics">Physics</option>
+                    <option value="political_science">Political Science</option>
+                    <option value="psychology">Psychology</option>
+                    <option value="social_sciences">Social Sciences</option>
+                    <option value="sports_science">Sports Science</option>
+                    <option value="veterinary_science">Veterinary Science</option>
                 </select>
             </div>
-            <div class="mb-3">
+            <div class="mb-lg-2">
                 <label for="desiredCourse" class="form-label">Desired Course</label>
-                <select class="form-select" id="desiredCourse" name="desiredCourse" required>
+                <!-- <select class="form-select" id="desiredCourse" name="desiredCourse" required>
                     <option value="">Select Desired Course</option>
                     <option value="mechanical_engineering">Mechanical Engineering</option>
                     <option value="electrical_engineering">Electrical Engineering</option>
                     <option value="computer_engineering">Computer Engineering</option>
                     <option value="civil_engineering">Civil Engineering</option>
+                </select> -->
+                <select class="form-select" id="desiredCourse" name="desiredCourse" required>
+                    <option value="">Select Desired Course</option>
                 </select>
             </div>
             <div class="btn-container">
@@ -211,6 +242,54 @@
 
             return false;
         }
+
+        // This JS code is to update course drop down acording to the selected feild of interest 
+
+        const fieldToCourses = {
+        agriculture: ["Agronomy", "Horticulture", "Soil Science", "Agricultural Economics", "Plant Pathology"],
+        architecture: ["Architectural Design", "Urban Planning", "Landscape Architecture", "Interior Architecture"],
+        arts: ["Fine Arts", "Performing Arts", "Visual Arts", "Art History", "Music Theory"],
+        biology: ["Molecular Biology", "Marine Biology", "Genetics", "Botany", "Zoology"],
+        business: ["Marketing", "Finance", "Accounting", "Entrepreneurship", "Business Administration"],
+        chemistry: ["Organic Chemistry", "Inorganic Chemistry", "Biochemistry", "Analytical Chemistry", "Physical Chemistry"],
+        computer_science: ["Software Engineering", "Artificial Intelligence", "Cybersecurity", "Data Structures", "Web Development"],
+        data_science: ["Data Analytics", "Big Data", "Machine Learning", "Data Mining", "Statistical Modeling"],
+        design: ["Graphic Design", "UI/UX Design", "Fashion Design", "Product Design", "Interior Design"],
+        economics: ["Microeconomics", "Macroeconomics", "Development Economics", "Game Theory", "Behavioral Economics"],
+        education: ["Early Childhood Education", "Educational Psychology", "Curriculum Design", "Educational Leadership"],
+        engineering: ["Mechanical Engineering", "Electrical Engineering", "Civil Engineering", "Chemical Engineering", "Mechatronics"],
+        environmental_science: ["Environmental Policy", "Ecology", "Climate Science", "Sustainability Studies"],
+        healthcare: ["Public Health", "Health Informatics", "Healthcare Management", "Community Health"],
+        hospitality: ["Hotel Management", "Tourism Management", "Event Planning", "Food & Beverage Management"],
+        international_relations: ["Global Politics", "International Law", "Diplomacy", "Geopolitics", "Human Rights"],
+        law: ["Constitutional Law", "Criminal Law", "Corporate Law", "International Law", "Civil Procedure"],
+        mathematics: ["Algebra", "Calculus", "Statistics", "Geometry", "Number Theory"],
+        media_studies: ["Journalism", "Mass Communication", "Digital Media", "Film Studies", "Broadcasting"],
+        medicine: ["General Medicine", "Surgery", "Pediatrics", "Cardiology", "Neurology"],
+        nursing: ["Critical Care Nursing", "Pediatric Nursing", "Psychiatric Nursing", "Community Health Nursing"],
+        pharmacy: ["Pharmacology", "Clinical Pharmacy", "Pharmaceutics", "Medicinal Chemistry"],
+        physics: ["Quantum Mechanics", "Thermodynamics", "Electromagnetism", "Classical Mechanics"],
+        political_science: ["Political Theory", "Comparative Politics", "Public Administration", "Policy Analysis"],
+        psychology: ["Clinical Psychology", "Cognitive Psychology", "Developmental Psychology", "Social Psychology"],
+        social_sciences: ["Anthropology", "Sociology", "Criminology", "Human Geography"],
+        sports_science: ["Exercise Physiology", "Kinesiology", "Sports Nutrition", "Athletic Training"],
+        veterinary_science: ["Animal Anatomy", "Veterinary Medicine", "Animal Nutrition", "Veterinary Surgery"]
+    };
+
+    document.getElementById("fieldOfInterest").addEventListener("change", function () {
+        const selectedField = this.value;
+        const courseSelect = document.getElementById("desiredCourse");
+        courseSelect.innerHTML = '<option value="">Select Desired Course</option>';
+
+        if (selectedField && fieldToCourses[selectedField]) {
+            fieldToCourses[selectedField].forEach(course => {
+                const option = document.createElement("option");
+                option.value = course.toLowerCase().replace(/\s+/g, "_");
+                option.textContent = course;
+                courseSelect.appendChild(option);
+            });
+        }
+    });
     </script>
 </body>
 </html> 

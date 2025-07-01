@@ -113,10 +113,45 @@
             font-weight: 600;
         }
 
+        .chat-footer {
+            background: #f5f5f5;
+            padding: 5px 15px;
+            text-align: center;
+            border-top: 1px solid #e0e0e0;
+            font-size: 12px;
+            color: #666;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .footer-logo {
+            width: 35px;
+            height: 35px;
+            margin-right: 5px;
+            vertical-align: middle;
+        }
+
+        .chat-footer p {
+            display: flex;
+            align-items: center;
+            margin: 0;
+        }
+
+        .chat-footer a {
+            color: #005B5B;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .chat-footer a:hover {
+            text-decoration: underline;
+        }
+
         .popup-iframe {
             flex: 1;
             width: 100%;
-            height: calc(100% - 60px);
+            height: calc(100% - 100px);
             border: none;
         }
 
@@ -198,7 +233,10 @@
                 <img src="https://cdn-icons-png.flaticon.com/512/3135/3135789.png" alt="Chat Icon">
                 <h3>AspireEC Chatbot</h3>
             </div>
-            <iframe src="http://127.0.0.1:8000/?embed=true" frameborder="0" class="popup-iframe" ></iframe>
+            <iframe src="http://web-production-9db49.up.railway.app/?embed=true" frameborder="0" class="popup-iframe" ></iframe>
+            <div class="chat-footer">
+                <p><img src="../logo.png" alt="AI Logo" class="footer-logo"> Intelligent solutions powered by <a href="https://aibytec.com/" target="_blank">Aibytec</a></p>
+            </div>
         </div>
     </div>
 
@@ -208,20 +246,34 @@
         const overlay = document.querySelector('.popup-overlay');
         const notification = document.querySelector('.notification');
 
-        // Show notification after 3 seconds
+        // Show notification when chatbot is closed
+        function showNotification() {
+            if (!isOpen) {
+                notification.classList.add('active');
+            }
+        }
+
+        // Hide notification when chatbot is open
+        function hideNotification() {
+            notification.classList.remove('active');
+        }
+
+        // Show notification after 3 seconds if chatbot is closed
         setTimeout(() => {
-            notification.classList.add('active');
-            // Hide notification after 5 seconds
-            setTimeout(() => {
-                notification.classList.remove('active');
-            }, 5000);
+            showNotification();
         }, 3000);
 
         function togglePopup() {
             isOpen = !isOpen;
             button.classList.toggle('active');
             overlay.classList.toggle('active');
-            notification.classList.remove('active');
+            
+            // Hide notification when opening, show when closing
+            if (isOpen) {
+                hideNotification();
+            } else {
+                showNotification();
+            }
         }
 
         function closePopup(event) {
