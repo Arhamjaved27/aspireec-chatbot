@@ -12,6 +12,8 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from typing import Optional
 from dotenv import load_dotenv
+from datetime import datetime
+import json
 
 load_dotenv()
 
@@ -84,6 +86,39 @@ async def chat(req: ChatRequest):
     context, reply = answer_query(req.message, messages, chunks, vectorizer)
     messages.append({"role": "assistant", "content": reply})
     add_message(req.session_id, messages)
+
+    # --- New chatData logic ---
+    now = datetime.now()
+    date_str = now.strftime('%Y-%m-%d')
+    time_str = now.strftime('%H:%M:%S')
+    chatData = []
+    chat_file_name = f"Chats/{date_str}_{req.session_id}.json"
+    # Try to load existing chatData if file exists
+    if os.path.exists(chat_file_name):
+        with open(chat_file_name, 'r', encoding='utf-8') as f:
+            try:
+                chatData = json.load(f)
+            except Exception:
+                chatData = []
+    # Add user message
+    chatData.append({
+        "role": "user",
+        "content": req.message,
+        "date": date_str,
+        "time": time_str
+    })
+    # Add assistant message
+    chatData.append({
+        "role": "assistant",
+        "content": reply,
+        "date": date_str,
+        "time": time_str
+    })
+    # Save chatData to file
+    with open(chat_file_name, 'w', encoding='utf-8') as f:
+        json.dump(chatData, f, ensure_ascii=False, indent=2)
+    # --- End chatData logic ---
+
     return ChatResponse(response=reply, messages=messages)
 
 @app.post("/submit-form")

@@ -74,10 +74,10 @@ def find_relevant_chunks(query, chunks, vectorizer, k=6):
     return [chunks[i] for i in indices]
 
 def get_ai_response(messages, context):
-    system = {"role": "system", "content": "You are a helpful chatbot of Aspire consultancy company. You are given a context and a question. You need to answer the question based on givin data. You are also given a list of previous messages. You need to answer the question based on the previous messages."}
-    system1 = {"role": "system", "content": "When some one give greeting give him/her greeting too and when someone say ok and bye so ask for furthur help and make it short and professional"}
+    system = {"role": "system", "content": "You are a helpful chatbot of Aspire consultancy company. You are given a context and a question. You need to answer the question based on givin data. You are also given a list of previous messages and you have to asnwer the question based on these messages."}
+    system1 = {"role": "system", "content": "When some one give greeting give him/her greeting too and when someone say ok so ask for furthur help, and when someone say bye, no, nothing so say bye then say see you later and when someone give you appriciation so say thank you and say you are welcome"}
     system2 = {"role": "system", "content": "Dont add any other text to your response. dont add this Hello! I amm the helpful chatbot from Aspire Educational Consulting in every message."}
-    system3 = {"role": "system", "content": "Please give answer short and a professional way. not include unnecesary information."}
+    system3 = {"role": "system", "content": "Please give answer in short and professional way. not include unnecesary information. And for meaningless and bad words question like "" give answer like numbers, fuck, etc. 'I'm sorry, I can't answer that question.please contact with our team."}
     
     all_msgs = [system] +[system1] +[system2]+ [system3] + messages[:-1] + [{"role": "user", "content": f"Context: {context}\n\n{messages[-1]['content']}"}]
     try:

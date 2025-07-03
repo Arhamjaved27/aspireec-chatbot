@@ -104,6 +104,13 @@
       color: var(--text-light);
     }
 
+    .message.bot ul,
+    .message.bot ol {
+      padding-left: 2em;
+      margin-top: 0.5em;
+      margin-bottom: 0.5em;
+    }
+
     .typing {
       font-style: italic;
       opacity: 0.7;
@@ -229,7 +236,35 @@
 
       const bubble = document.createElement("div");
       bubble.className = `message ${role}`;
-      bubble.textContent = text;
+
+      if (role === "bot") {
+        // Detect bullet points or numbered lists
+        const lines = text.split(/\r?\n/);
+        const isList = lines.some(line => line.trim().match(/^(-|\*|\d+\.)\s+/));
+        if (isList) {
+          // Create a list element
+          let listType = lines.some(line => line.trim().match(/^\d+\./)) ? 'ol' : 'ul';
+          const list = document.createElement(listType);
+          lines.forEach(line => {
+            const match = line.trim().match(/^(-|\*|\d+\.)\s+(.*)/);
+            if (match) {
+              const li = document.createElement('li');
+              li.textContent = match[2];
+              list.appendChild(li);
+            } else if (line.trim() !== '') {
+              // If not a bullet, add as a paragraph
+              const p = document.createElement('p');
+              p.textContent = line;
+              bubble.appendChild(p);
+            }
+          });
+          bubble.appendChild(list);
+        } else {
+          bubble.textContent = text;
+        }
+      } else {
+        bubble.textContent = text;
+      }
 
       if (role === "user") {
         row.appendChild(bubble);
