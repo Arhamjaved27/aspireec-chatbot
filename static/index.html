@@ -196,12 +196,21 @@
   </div>
 
   <script>
-    const sessionId = Math.random().toString(36).substr(2);
+    // const sessionId = Math.random().toString(36).substr(2);
     const chatBox = document.getElementById("chatBox");
 
+    const sessionId = localStorage.getItem('chatSession') || generateSession();
+    function generateSession() {
+      const id = Math.random().toString(36).substr(2);
+      localStorage.setItem('chatSession', id);
+      return id;
+    }
+    
     window.onload = () => {
       appendMessage("bot", "Welcome to Aspire Educational Consultant! How can I help you today?");
     };
+
+   
 
     async function sendMessage() {
       const input = document.getElementById("msgInput");

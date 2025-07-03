@@ -74,22 +74,42 @@ def find_relevant_chunks(query, chunks, vectorizer, k=6):
     return [chunks[i] for i in indices]
 
 def get_ai_response(messages, context):
-    system = {"role": "system", "content": "You are a helpful chatbot of Aspire consultancy company. You are given a context and a question. You need to answer the question based on givin data. You are also given a list of previous messages and you have to asnwer the question based on these messages."}
-    system1 = {"role": "system", "content": "When some one give greeting give him/her greeting too and when someone say ok so ask for furthur help, and when someone say bye, no, nothing so say bye then say see you later and when someone give you appriciation so say thank you and say you are welcome"}
-    system2 = {"role": "system", "content": "Dont add any other text to your response. dont add this Hello! I amm the helpful chatbot from Aspire Educational Consulting in every message."}
-    system3 = {"role": "system", "content": "Please give answer in short and professional way. not include unnecesary information. And for meaningless and bad words question like "" give answer like numbers, fuck, etc. 'I'm sorry, I can't answer that question.please contact with our team."}
+
+    system = {
+    "role": "system",
+    "content": (
+        "You are a helpful chatbot for Aspire Educational Consulting.\n"
+        "Answer based only on provided context and history.\n"
+        "Use active voice. Keep responses under 20 words.\n"
+        "Greet when user come and when thry greet.\n"
+        "Say goodbye with nice conversation if user says no/bye/nothing.\n"
+        "Appreciate compliments politely and also deal with appriciation for your good response.\n"
+        "For nonsense questions or profanity: 'I'm sorry, I can't answer that question. contact to the AspireEC team \n"
+        "Answer will be short ,infomative, professional"
+        )
+    }
+   
     
-    all_msgs = [system] +[system1] +[system2]+ [system3] + messages[:-1] + [{"role": "user", "content": f"Context: {context}\n\n{messages[-1]['content']}"}]
+    all_msgs = [system] + messages[:-1] + [{"role": "user", "content": f"Context: {context}\n\n{messages[-1]['content']}"}]
     try:
         completion = client.chat.completions.create(messages=all_msgs, 
                                                     model=MODEL,
-                                                    temperature=0.6,
-                                                    max_tokens=512)
+                                                    temperature=0.5,
+                                                    max_tokens=200)
         return completion.choices[0].message.content
     except:
         return "I'm sorry, something went wrong. Please try again."
 
+#hadling the bad words
+def is_nonsense(query: str):
+    bad_words = ["fuck", "shit", "teleport", "mars", "unicorn", "robot", "atlantis"]
+    return any(word in query.lower() for word in bad_words)
+
 def answer_query(query, messages, chunks, vectorizer):
+    if is_nonsense(query):
+        return "", "I'm sorry, I can't answer that question. Please contact our team."
     context = "\n".join(find_relevant_chunks(query, chunks, vectorizer))
     reply = get_ai_response(messages, context)
     return context, reply
+
+
